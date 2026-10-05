@@ -1,11 +1,44 @@
 // TODO: Implement `TryFrom<String>` and `TryFrom<&str>` for `Status`.
 //  The parsing should be case-insensitive.
 
+use std::ascii::AsciiExt;
+use crate::Status::Done;
+
 #[derive(Debug, PartialEq, Clone)]
 enum Status {
     ToDo,
     InProgress,
     Done,
+}
+
+impl TryFrom<String> for Status {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        if value.eq_ignore_ascii_case("todo") {
+            return Ok(Status::ToDo);
+        } else if value.eq_ignore_ascii_case("InProgress")  {
+            return Ok(Status::InProgress);
+        } else if value.eq_ignore_ascii_case("Done") {
+            return Ok(Status::Done)
+        }
+        return Err("Nein!".to_string())
+    }
+}
+
+impl TryFrom<&str> for Status {
+    type Error = String;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        if value.eq_ignore_ascii_case("todo") {
+            return Ok(Status::ToDo);
+        } else if value.eq_ignore_ascii_case("InProgress")  {
+            return Ok(Status::InProgress);
+        } else if value.eq_ignore_ascii_case("Done") {
+            return Ok(Status::Done)
+        }
+        return Err("Nein!".to_string())
+    }
 }
 
 #[cfg(test)]
